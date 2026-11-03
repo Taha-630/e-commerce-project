@@ -1,0 +1,96 @@
+<script>
+let cart = [];
+let total = 0;
+
+// Add product to cart
+function addToCart(name, price) {
+
+    cart.push({
+        name: name,
+        price: price
+    });
+
+    total += price;
+
+    updateCart();
+}
+
+// Update cart display
+function updateCart() {
+
+    const cartItems = document.getElementById("cart-items");
+
+    cartItems.innerHTML = "";
+
+    cart.forEach((item, index) => {
+
+        const li = document.createElement("li");
+
+        li.textContent = `${item.name} - $${item.price} `;
+
+        const removeBtn = document.createElement("button");
+
+        removeBtn.textContent = "Remove";
+
+        removeBtn.onclick = function() {
+            removeFromCart(index);
+        };
+
+        li.appendChild(removeBtn);
+
+        cartItems.appendChild(li);
+
+    });
+
+    document.getElementById("cart-count").textContent = cart.length;
+
+    document.getElementById("total").textContent = total;
+}
+
+// Remove product
+function removeFromCart(index) {
+
+    total -= cart[index].price;
+
+    cart.splice(index, 1);
+
+    updateCart();
+}
+
+// Checkout
+function checkout() {
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    alert("Thank you for shopping with ShopEase!");
+
+    cart = [];
+    total = 0;
+
+    updateCart();
+}
+
+// Search products
+document.getElementById("search").addEventListener("input", function() {
+
+    let searchValue = this.value.toLowerCase();
+
+    let products = document.querySelectorAll(".product-card");
+
+    products.forEach(product => {
+
+        let productName = product.querySelector("h3").textContent.toLowerCase();
+
+        if (productName.includes(searchValue)) {
+            product.style.display = "block";
+        } else {
+            product.style.display = "none";
+        }
+
+    });
+
+});
+</script>
